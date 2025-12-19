@@ -30,6 +30,7 @@ const html = `<!DOCTYPE html>
   <div class="topbar">
     <strong>Puzzle Gallery</strong>
     <button id="copyPageLink">Copia link galleria</button>
+    <!-- Puoi rimuovere o modificare questo link Facebook se non serve -->
     <a href="https://www.facebook.com/groups/1886743115264003" target="_blank">Gruppo Facebook</a>
   </div>
 
@@ -60,7 +61,9 @@ const html = `<!DOCTYPE html>
       if (!btn) return;
       const url = btn.dataset.url;
       try {
-        await navigator.clipboard.writeText(window.location.origin + "/" + url);
+        // 🔑 Correzione: includiamo anche pathname per avere /puzzle-gallery/
+        const fullUrl = window.location.origin + window.location.pathname + url;
+        await navigator.clipboard.writeText(fullUrl);
         alert("Link immagine copiato!");
       } catch {
         alert("Permesso clipboard negato. Apri l’immagine e copia manualmente.");
@@ -75,5 +78,3 @@ fs.writeFileSync(outputFile, html, "utf-8");
 
 console.log(`✅ Galleria generata con ${files.length} immagini`);
 console.log("Index generato in public/index.html");
-
-
