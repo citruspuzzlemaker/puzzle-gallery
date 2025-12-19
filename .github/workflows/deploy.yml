@@ -28,12 +28,14 @@ jobs:
       - name: Generate gallery
         run: node scripts/generate-index.js
 
+      # 4b. Copia le immagini nella cartella public
+      - name: Copy images
+        run: cp -r images public/
+
       # 5. Deploy su GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          publish_branch: gh-pages   # 👈 branch di pubblicazione
-
-
+          publish_branch: gh-pages   # branch di pubblicazione
