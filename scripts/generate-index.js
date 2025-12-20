@@ -7,20 +7,28 @@ const outputFile = path.join(outputDir, "index.html");
 
 const execSync = require("child_process").execSync;
 
+const execSync = require("child_process").execSync;
+
 let files = fs.readdirSync(imagesDir)
   .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
   .map(name => {
     const fullPath = path.join(imagesDir, name);
+    let timestamp;
 
-    // Ottieni la data dell’ultimo commit per quel file
-    const timestamp = execSync(`git log -1 --format=%ct -- "${fullPath}"`).toString().trim();
+    try {
+      // Prova a ottenere la data dell’ultimo commit
+      timestamp = execSync(`git log -1 --format=%ct -- "${fullPath}"`).toString().trim();
+    } catch (err) {
+      // Se fallisce, usa la data di modifica del file
+      timestamp = fs.statSync(fullPath).mtime.getTime().toString();
+    }
 
     return {
       name,
       time: parseInt(timestamp, 10)
     };
   })
-  .sort((a, b) => b.time - a.time) // dal più recente al più vecchio
+  .sort((a, b) => b.time - a.time)
   .map(f => f.name);
 
 
