@@ -4,16 +4,19 @@ const path = require("path");
 const imagesDir = path.join(__dirname, "..", "images");
 const outputDir = path.join(__dirname, "..", "public");
 const outputFile = path.join(outputDir, "index.html");
+const jsonFile = path.join(outputDir, "gallery.json");
 
-const execSync = require("child_process").execSync;
+// Legge i file e aggiunge timestamp locale
+let files = fs.readdirSync(imagesDir)
+  .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
+  .map(name => {
+    const fullPath = path.join(imagesDir, name);
+    const time = fs.statSync(fullPath).mtime.getTime();
+    return { name, time };
+  })
+  .sort((a, b) => b.time - a.time); // dal più recente al più vecchio
 
-const execSync = require("child_process").execSync;
-
-const files = fs.readdirSync(imagesDir).filter(f =>
-  /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
-);
-
-
+// HTML della galleria
 const html = `<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -22,8 +25,7 @@ const html = `<!DOCTYPE html>
   <title>Puzzle Gallery</title>
   <style>
     body { font-family: system-ui, sans-serif; margin: 0; background: #fafafa; }
-    .topbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #111; color: #fff; position: sticky; top: 0; }
-    .topbar a { color: #9cf; text-decoration: none; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #111; color: #fff; position: sticky; top: 0; z-index: 10; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 16px; }
     .card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
     .card img { width: 100%; display: block; }
@@ -35,17 +37,15 @@ const html = `<!DOCTYPE html>
   <div class="topbar">
     <strong>Puzzle Gallery</strong>
     <button id="copyPageLink">Copia link galleria</button>
-    <!-- Puoi rimuovere o modificare questo link Facebook se non serve -->
-    <a href="https://www.facebook.com/groups/1886743115264003" target="_blank">Gruppo Facebook</a>
   </div>
 
   <div class="gallery" id="gallery">
-    ${files.map(name => `
+    ${files.map(f => `
       <div class="card">
-        <img src="images/${name}" alt="${name}" loading="lazy">
+        <img src="images/${f.name}" alt="${f.name}" loading="lazy">
         <div class="card-footer">
-          <button class="copy" data-url="images/${name}">Copia link</button>
-          <a href="images/${name}" target="_blank">Apri</a>
+          <button class="copy" data-url="images/${f.name}">Copia link</button>
+          <a href="images/${f.name}" target="_blank">Apri</a>
         </div>
       </div>
     `).join("")}
@@ -57,7 +57,7 @@ const html = `<!DOCTYPE html>
         await navigator.clipboard.writeText(window.location.href);
         alert("Link della galleria copiato!");
       } catch {
-        alert("Permesso clipboard negato. Copia manualmente.");
+        alert("Permesso clipboard negato.");
       }
     });
 
@@ -66,20 +66,29 @@ const html = `<!DOCTYPE html>
       if (!btn) return;
       const url = btn.dataset.url;
       try {
-        // 🔑 Correzione: includiamo anche pathname per avere /puzzle-gallery/
         const fullUrl = window.location.origin + window.location.pathname + url;
         await navigator.clipboard.writeText(fullUrl);
         alert("Link immagine copiato!");
       } catch {
-        alert("Permesso clipboard negato. Apri l’immagine e copia manualmente.");
+        alert("Permesso clipboard negato.");
       }
     });
   </script>
 </body>
 </html>`;
 
+// Crea la cartella di output se non esiste
 if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+
+// Scrive HTML
 fs.writeFileSync(outputFile, html, "utf-8");
 
-console.log(`✅ Galleria generata con ${files.length} immagini`);
-console.log("Index generato in public/index.html");
+// Genera JSON con timestamp
+const jsonData = files.map(f => ({
+  name: f.name,
+  url: `images/${f.name}`,
+  time: f.time
+}));
+fs.writeFileSync(jsonFile, JSON.stringify(jsonData, null, 2), "utf-8");
+
+console.log("✅ Galleria generata");
