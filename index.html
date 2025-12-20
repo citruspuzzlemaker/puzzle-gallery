@@ -6,8 +6,7 @@
   <title>Puzzle Gallery</title>
   <style>
     body { font-family: system-ui, sans-serif; margin: 0; background: #fafafa; }
-    .topbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #111; color: #fff; position: sticky; top: 0; }
-    .topbar a { color: #9cf; text-decoration: none; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #111; color: #fff; position: sticky; top: 0; z-index: 10; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 16px; }
     .card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
     .card img { width: 100%; display: block; }
@@ -19,33 +18,15 @@
   <div class="topbar">
     <strong>Puzzle Gallery</strong>
     <button id="copyPageLink">Copia link galleria</button>
-    <!-- Puoi rimuovere o modificare questo link Facebook se non serve -->
-    <a href="https://www.facebook.com/groups/1886743115264003" target="_blank">Gruppo Facebook</a>
   </div>
 
   <div class="gallery" id="gallery">
     
       <div class="card">
-        <img src="images/bubblebridge.jpeg" alt="bubblebridge.jpeg" loading="lazy">
+        <img src="images/prova.jpeg" alt="prova.jpeg" loading="lazy">
         <div class="card-footer">
-          <button class="copy" data-url="images/bubblebridge.jpeg">Copia link</button>
-          <a href="images/bubblebridge.jpeg" target="_blank">Apri</a>
-        </div>
-      </div>
-    
-      <div class="card">
-        <img src="images/clown.jpeg" alt="clown.jpeg" loading="lazy">
-        <div class="card-footer">
-          <button class="copy" data-url="images/clown.jpeg">Copia link</button>
-          <a href="images/clown.jpeg" target="_blank">Apri</a>
-        </div>
-      </div>
-    
-      <div class="card">
-        <img src="images/cpmtreeminipuzzle.jpeg" alt="cpmtreeminipuzzle.jpeg" loading="lazy">
-        <div class="card-footer">
-          <button class="copy" data-url="images/cpmtreeminipuzzle.jpeg">Copia link</button>
-          <a href="images/cpmtreeminipuzzle.jpeg" target="_blank">Apri</a>
+          <button class="copy" data-url="images/prova.jpeg">Copia link</button>
+          <a href="images/prova.jpeg" target="_blank">Apri</a>
         </div>
       </div>
     
@@ -66,10 +47,26 @@
       </div>
     
       <div class="card">
-        <img src="images/prova.jpeg" alt="prova.jpeg" loading="lazy">
+        <img src="images/clown.jpeg" alt="clown.jpeg" loading="lazy">
         <div class="card-footer">
-          <button class="copy" data-url="images/prova.jpeg">Copia link</button>
-          <a href="images/prova.jpeg" target="_blank">Apri</a>
+          <button class="copy" data-url="images/clown.jpeg">Copia link</button>
+          <a href="images/clown.jpeg" target="_blank">Apri</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <img src="images/cpmtreeminipuzzle.jpeg" alt="cpmtreeminipuzzle.jpeg" loading="lazy">
+        <div class="card-footer">
+          <button class="copy" data-url="images/cpmtreeminipuzzle.jpeg">Copia link</button>
+          <a href="images/cpmtreeminipuzzle.jpeg" target="_blank">Apri</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <img src="images/bubblebridge.jpeg" alt="bubblebridge.jpeg" loading="lazy">
+        <div class="card-footer">
+          <button class="copy" data-url="images/bubblebridge.jpeg">Copia link</button>
+          <a href="images/bubblebridge.jpeg" target="_blank">Apri</a>
         </div>
       </div>
     
@@ -81,7 +78,7 @@
         await navigator.clipboard.writeText(window.location.href);
         alert("Link della galleria copiato!");
       } catch {
-        alert("Permesso clipboard negato. Copia manualmente.");
+        alert("Permesso clipboard negato.");
       }
     });
 
@@ -90,12 +87,11 @@
       if (!btn) return;
       const url = btn.dataset.url;
       try {
-        // 🔑 Correzione: includiamo anche pathname per avere /puzzle-gallery/
         const fullUrl = window.location.origin + window.location.pathname + url;
         await navigator.clipboard.writeText(fullUrl);
         alert("Link immagine copiato!");
       } catch {
-        alert("Permesso clipboard negato. Apri l’immagine e copia manualmente.");
+        alert("Permesso clipboard negato.");
       }
     });
   </script>
