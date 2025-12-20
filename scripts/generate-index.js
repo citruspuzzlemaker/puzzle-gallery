@@ -13,15 +13,11 @@ let files = fs.readdirSync(imagesDir)
   .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
   .map(name => {
     const fullPath = path.join(imagesDir, name);
-    let timestamp;
-
-    try {
-      // Prova a ottenere la data dell’ultimo commit
-      timestamp = execSync(`git log -1 --format=%ct -- "${fullPath}"`).toString().trim();
-    } catch (err) {
-      // Se fallisce, usa la data di modifica del file
-      timestamp = fs.statSync(fullPath).mtime.getTime().toString();
-    }
+    const time = fs.statSync(fullPath).mtime.getTime(); // data di modifica
+    return { name, time };
+  })
+  .sort((a, b) => b.time - a.time) // dal più recente al più vecchio
+  .map(f => f.name);
 
     return {
       name,
