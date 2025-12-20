@@ -5,14 +5,24 @@ const imagesDir = path.join(__dirname, "..", "images");
 const outputDir = path.join(__dirname, "..", "public");
 const outputFile = path.join(outputDir, "index.html");
 
+const execSync = require("child_process").execSync;
+
 let files = fs.readdirSync(imagesDir)
   .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
-  .map(name => ({
-    name,
-    time: fs.statSync(path.join(imagesDir, name)).mtime.getTime()
-  }))
+  .map(name => {
+    const fullPath = path.join(imagesDir, name);
+
+    // Ottieni la data dell’ultimo commit per quel file
+    const timestamp = execSync(`git log -1 --format=%ct -- "${fullPath}"`).toString().trim();
+
+    return {
+      name,
+      time: parseInt(timestamp, 10)
+    };
+  })
   .sort((a, b) => b.time - a.time) // dal più recente al più vecchio
   .map(f => f.name);
+
 
 const html = `<!DOCTYPE html>
 <html lang="it">
