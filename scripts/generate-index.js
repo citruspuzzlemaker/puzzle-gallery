@@ -9,23 +9,9 @@ const execSync = require("child_process").execSync;
 
 const execSync = require("child_process").execSync;
 
-let files = fs.readdirSync(imagesDir)
-  .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
-  .map(name => {
-    const fullPath = path.join(imagesDir, name);
-    const time = fs.statSync(fullPath).mtime.getTime(); // data di modifica
-    return { name, time };
-  })
-  .sort((a, b) => b.time - a.time) // dal più recente al più vecchio
-  .map(f => f.name);
-
-    return {
-      name,
-      time: parseInt(timestamp, 10)
-    };
-  })
-  .sort((a, b) => b.time - a.time)
-  .map(f => f.name);
+const files = fs.readdirSync(imagesDir).filter(f =>
+  /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
+);
 
 
 const html = `<!DOCTYPE html>
