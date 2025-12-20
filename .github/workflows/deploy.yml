@@ -12,7 +12,10 @@ jobs:
     steps:
       # 1. Checkout del repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+  uses: actions/checkout@v3
+  with:
+    fetch-depth: 0   # scarica TUTTA la cronologia git
+
 
       # 2. Setup Node.js
       - name: Setup Node.js
