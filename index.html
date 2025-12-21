@@ -6,15 +6,13 @@
   <title>Puzzle Gallery</title>
   <style>
     body { font-family: system-ui, sans-serif; margin: 0; background: #fafafa; }
-    .topbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #111; color: #fff; position: sticky; top: 0; z-index: 100; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #111; color: #fff; position: sticky; top: 0; }
     .topbar a { color: #9cf; text-decoration: none; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 16px; }
-    .card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; transition: transform 0.2s; }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
-    .card-footer { display: flex; gap: 8px; padding: 8px; justify-content: space-between; }
-    button { padding: 6px 10px; border: 1px solid #ccc; background: #f7f7f7; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
-    .btn-open { text-decoration: none; color: #333; border: 1px solid #ccc; padding: 6px 10px; border-radius: 6px; background: #fff; font-size: 0.8rem; }
+    .card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff; }
+    .card img { width: 100%; display: block; }
+    .card-footer { display: flex; gap: 8px; padding: 8px; }
+    button { padding: 6px 10px; border: 1px solid #ccc; background: #f7f7f7; border-radius: 6px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -27,26 +25,10 @@
   <div class="gallery" id="gallery">
     
       <div class="card">
-        <img src="images/prova.jpeg" alt="prova.jpeg" loading="lazy">
+        <img src="images/bubblebridge.jpeg" alt="bubblebridge.jpeg" loading="lazy">
         <div class="card-footer">
-          <button class="copy" data-url="images/prova.jpeg">Copia link</button>
-          <a href="images/prova.jpeg" target="_blank" class="btn-open">Apri</a>
-        </div>
-      </div>
-    
-      <div class="card">
-        <img src="images/mountain2.jpeg" alt="mountain2.jpeg" loading="lazy">
-        <div class="card-footer">
-          <button class="copy" data-url="images/mountain2.jpeg">Copia link</button>
-          <a href="images/mountain2.jpeg" target="_blank" class="btn-open">Apri</a>
-        </div>
-      </div>
-    
-      <div class="card">
-        <img src="images/pizzaguitar.jpeg" alt="pizzaguitar.jpeg" loading="lazy">
-        <div class="card-footer">
-          <button class="copy" data-url="images/pizzaguitar.jpeg">Copia link</button>
-          <a href="images/pizzaguitar.jpeg" target="_blank" class="btn-open">Apri</a>
+          <button class="copy" data-url="images/bubblebridge.jpeg">Copia link</button>
+          <a href="images/bubblebridge.jpeg" target="_blank">Apri</a>
         </div>
       </div>
     
@@ -54,7 +36,7 @@
         <img src="images/clown.jpeg" alt="clown.jpeg" loading="lazy">
         <div class="card-footer">
           <button class="copy" data-url="images/clown.jpeg">Copia link</button>
-          <a href="images/clown.jpeg" target="_blank" class="btn-open">Apri</a>
+          <a href="images/clown.jpeg" target="_blank">Apri</a>
         </div>
       </div>
     
@@ -62,15 +44,31 @@
         <img src="images/cpmtreeminipuzzle.jpeg" alt="cpmtreeminipuzzle.jpeg" loading="lazy">
         <div class="card-footer">
           <button class="copy" data-url="images/cpmtreeminipuzzle.jpeg">Copia link</button>
-          <a href="images/cpmtreeminipuzzle.jpeg" target="_blank" class="btn-open">Apri</a>
+          <a href="images/cpmtreeminipuzzle.jpeg" target="_blank">Apri</a>
         </div>
       </div>
     
       <div class="card">
-        <img src="images/bubblebridge.jpeg" alt="bubblebridge.jpeg" loading="lazy">
+        <img src="images/mountain2.jpeg" alt="mountain2.jpeg" loading="lazy">
         <div class="card-footer">
-          <button class="copy" data-url="images/bubblebridge.jpeg">Copia link</button>
-          <a href="images/bubblebridge.jpeg" target="_blank" class="btn-open">Apri</a>
+          <button class="copy" data-url="images/mountain2.jpeg">Copia link</button>
+          <a href="images/mountain2.jpeg" target="_blank">Apri</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <img src="images/pizzaguitar.jpeg" alt="pizzaguitar.jpeg" loading="lazy">
+        <div class="card-footer">
+          <button class="copy" data-url="images/pizzaguitar.jpeg">Copia link</button>
+          <a href="images/pizzaguitar.jpeg" target="_blank">Apri</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <img src="images/prova.jpeg" alt="prova.jpeg" loading="lazy">
+        <div class="card-footer">
+          <button class="copy" data-url="images/prova.jpeg">Copia link</button>
+          <a href="images/prova.jpeg" target="_blank">Apri</a>
         </div>
       </div>
     
@@ -82,7 +80,7 @@
         await navigator.clipboard.writeText(window.location.href);
         alert("Link della galleria copiato!");
       } catch {
-        alert("Errore copia.");
+        alert("Permesso clipboard negato. Copia manualmente.");
       }
     });
 
@@ -91,11 +89,11 @@
       if (!btn) return;
       const url = btn.dataset.url;
       try {
-        const fullUrl = window.location.origin + window.location.pathname.replace('index.html', '') + url;
+        const fullUrl = window.location.origin + window.location.pathname + url;
         await navigator.clipboard.writeText(fullUrl);
         alert("Link immagine copiato!");
       } catch {
-        alert("Errore copia.");
+        alert("Permesso clipboard negato.");
       }
     });
   </script>
