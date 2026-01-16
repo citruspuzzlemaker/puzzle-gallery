@@ -6,9 +6,14 @@ const outputDir = path.join(__dirname, "..", "public");
 const outputFile = path.join(outputDir, "index.html");
 
 // ✅ Versione originale: NESSUN execSync, NESSUN ordinamento speciale
-const files = fs.readdirSync(imagesDir).filter(f =>
+/*const files = fs.readdirSync(imagesDir).filter(f =>
   /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
-);
+);*/
+const files = fs.readdirSync(imagesDir)
+  .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
+  .sort()        // Ordina alfabeticamente (quindi cronologicamente)
+  .reverse();    // Inverte: i più recenti in alto
+
 
 const html = `<!DOCTYPE html>
 <html lang="it">
