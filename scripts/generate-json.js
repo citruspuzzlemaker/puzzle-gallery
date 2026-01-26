@@ -24,7 +24,7 @@ console.log(`✅ gallery.json generato con ${files.length} immagini`);*/
 
 
 // versione funzionante con doppio commit
-/*const fs = require("fs");
+const fs = require("fs");
 const path = require("path");
 
 const imagesDir = path.join(__dirname, "..", "images");
@@ -48,37 +48,5 @@ if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
 fs.writeFileSync(outputFile, JSON.stringify(urls, null, 2));
 
-console.log(`✅ gallery.json generato con ${files.length} immagini`);*/
-
-const fs = require("fs");
-const path = require("path");
-
-const imagesDir = path.join(__dirname, "..", "images");
-const outputDir = path.join(__dirname, "..", "public");
-const outputFile = path.join(outputDir, "gallery.json");
-
-// Base URL ImageKit
-const baseUrl = "https://ik.imagekit.io/cpuzzle";
-
-const files = fs.readdirSync(imagesDir)
-  .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
-  .sort()
-  .reverse();
-
-const timestamp = Date.now();
-
-const urls = files.map(name => `${baseUrl}/${name}?t=${timestamp}`);
-
-const output = {
-  generated: timestamp,
-  count: urls.length,
-  images: urls
-};
-
-if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
-
-fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
-
 console.log(`✅ gallery.json generato con ${files.length} immagini`);
-
 
