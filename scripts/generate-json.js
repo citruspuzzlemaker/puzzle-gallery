@@ -39,9 +39,9 @@ const files = fs.readdirSync(imagesDir)
   .sort()        // Ordina alfabeticamente (quindi cronologicamente)
   .reverse();    // Inverte: i più recenti per primi
 
-//const urls = files.map(name => `${baseUrl}/${name}`);
-const timestamp = Date.now();
-const urls = files.map(name => `${baseUrl}/${name}?t=${timestamp}`);
+const urls = files.map(name => `${baseUrl}/${name}`);
+//const timestamp = Date.now();
+//const urls = files.map(name => `${baseUrl}/${name}?t=${timestamp}`);
 
 
 if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
